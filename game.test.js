@@ -1,4 +1,5 @@
 import { Game, GAME_STATUSES } from './game.js';
+import { NumberMagicUtil } from './number-magic-utill.js';
 
 
 describe("Game", () =>{
@@ -17,8 +18,8 @@ describe("Game", () =>{
     })
 
     it("game should return correct Google position that changed every 2 second", async () => {
-        const game = new Game()
-
+        const numberUtil = new NumberMagicUtil()
+        const game = new Game(numberUtil)
 
         await game.start()
 
