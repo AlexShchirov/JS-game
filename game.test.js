@@ -26,7 +26,8 @@ describe("Game", () =>{
         let googlePosition = await game.getGooglePosition()
         expect(googlePosition).toBeDefined()
 
-        await delay(3000)
+        let settings = await game.getSettings()
+        await delay(settings.jumpInterval)
 
         let googlePosition2 = await game.getGooglePosition()
         expect(googlePosition2).not.toEqual(googlePosition)

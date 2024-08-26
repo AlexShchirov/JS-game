@@ -2,18 +2,31 @@ export class Game {
     #state ;
     #googlePosition;
     #numberUtil
-
+    #settings
+//dependency injection
     constructor(numberUtil){
         this.#state = GAME_STATUSES.PENDING;
         this.#googlePosition = {x : 1, y : 1}
-        this.#numberUtil = numberUtil
+        this.#numberUtil = numberUtil 
+        this.#settings = {
+            gridSize:{
+                x:3,
+                y:3
+            },
+            jumpInterval:2000
+        }
     }
 
     #jumpGoogle() {
-        this.#googlePosition = { 
-            x: this.#numberUtil.getRandomNumber(0, 5), 
-            y: this.#numberUtil.getRandomNumber(0, 5) 
+        const newGooglePosition = { 
+            x: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.x), 
+            y: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.y) 
         };
+        if(newGooglePosition.x === this.#googlePosition.x && newGooglePosition.y === this.#googlePosition.y){
+            this.#jumpGoogle()
+        }else{
+            this.#googlePosition = newGooglePosition
+        }
     }
 
     // getter
@@ -21,10 +34,15 @@ export class Game {
         return this.#state;
     }
 
+    async getSettings(){
+        return this.#settings
+    }
+
+
     async start() {
         setInterval(() => {
-            this.#jumpGoogle.bind(this)();
-        }, 2000);
+            this.#jumpGoogle.bind(this);
+        }, this.#settings.jumpInterval);
         this.#state = GAME_STATUSES.IN_PROGRESS;
     }
 
